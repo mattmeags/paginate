@@ -1,3 +1,5 @@
+//TODO: add class option, left right buttons, and next on buttons
+
 (function($){
   $.fn.pagination = function(options){
     var settings = $.extend({
@@ -96,7 +98,11 @@ var Pagination = {
   },
 
   paginationButtonClick: function (button, numItems) {
+    $('.active').removeClass('active');
+    button.addClass('active');
+
     var button = $(button).attr('data-control');
+
     this.clickCounter = button - 1;
 
     this.paginate(numItems, button);
