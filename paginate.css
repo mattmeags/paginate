@@ -4,6 +4,19 @@
 .visually-active {
   display: block;
 }
+.pagination-wrapper .slider-button {
+    background-repeat: no-repeat;
+    height: 64px;
+    width: 64px;
+    float: left;
+}
+.pagination-wrapper .slider-button.prev {
+    background-image: url(prev.png);
+}
+
+.pagination-wrapper .slider-button.next {
+    background-image: url(next.png);
+}
 
 /*button styles*/
 .pagination-buttons {
