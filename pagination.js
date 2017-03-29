@@ -6,11 +6,12 @@
       buttons: true,
       className: 'item',
       sliderButtons: false,
-      fullButtons: true
+      fullButtons: true,
+      wrapper: this.selector
 
     }, options);
 
-    Pagination.setDefault(settings.numItems,  this.selector, settings.buttons, settings.className, settings.sliderButtons, settings.fullButtons);
+    Pagination.setDefault(settings);
     $(document).on('click', '.next', function(){
         Pagination.nextClick(settings.numItems);
     }).on('click', '.prev', function(){
@@ -29,9 +30,15 @@ var Pagination = {
   numItems: 0,
   className: '',
 
-  setDefault: function(numItems, wrapper, buttons, className, sliderButtons, fullButtons) {
+  setDefault: function(settings) {
     var counter = 0,
-        max;
+        max,
+        numItems = settings.numItems,
+        wrapper = settings.wrapper,
+        buttons = settings.buttons,
+        className = settings.className,
+        sliderButtons = settings.sliderButtons,
+        fullButtons = settings.fullButtons;
 
     this.className = this.classify(className);
 
