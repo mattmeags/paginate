@@ -5,7 +5,7 @@
       moveItems: this.numItems,
       buttons: true,
       className: 'item',
-      sliderButtons: true,
+      sliderButtons: false,
       fullButtons: true
 
     }, options);
@@ -64,6 +64,8 @@ var Pagination = {
 
       this.clickCounter++;
 
+      this.buttonKeepUp(true);
+
       this.paginate(numItems, 0);
     }
   },
@@ -72,6 +74,8 @@ var Pagination = {
     if (this.clickCounter > 0) {
 
       this.clickCounter--;
+
+      this.buttonKeepUp(false);
 
       this.paginate(numItems, 0);
     }
@@ -132,5 +136,19 @@ var Pagination = {
     classify: function (className) {
         className = "." + className;
         return className;
+    },
+
+    buttonKeepUp: function (direction)  {
+        var $next = $('.active').next(),
+            $prev = $('.active').prev();
+        $('.active').removeClass('active');
+        if (direction == true) {
+            //code for next
+            $next.addClass('active');
+        }
+        if (direction == false) {
+            //code for previous
+            $prev.addClass('active');
+        }
     }
 };
