@@ -23,12 +23,20 @@
   };
 }(jQuery));
 
+
+
 var Pagination = {
   clickCounter: 0,
   maxNumberClicks: 0,
   totalItemsNumber: 0,
   numItems: 0,
   className: '',
+
+  context : {
+      buttons: true,
+      full: true,
+      numButtons: 0
+  },
 
   setDefault: function(settings) {
     var counter = 0,
@@ -53,16 +61,23 @@ var Pagination = {
     if (sliderButtons === true) {
         $(wrapper).prepend("<div class='prev slider-button'></div>").append("<div class='next slider-button'></div>");
     }
-    this.totalItemsNumber = counter;
+    //this.totalItemsNumber = counter;
+    this.totalItemsNumber =
     max = (this.totalItemsNumber / numItems) - 1;
     this.maxNumberClicks = Math.ceil(max);
 
     if (buttons === true) {
-      var buttons = (counter / numItems) + 1;
+      var buttons = (counter / numItems)+1;
+
+      this.context.numButtons = buttons;
 
       this.addButtons(buttons, wrapper, fullButtons);
     }
+    this.cacheDom();
+  },
 
+  cacheDom: function() {
+      this.$active = $('.active');
   },
 
   nextClick: function(numItems){
@@ -111,26 +126,53 @@ var Pagination = {
     });
   },
 
+//TODO: handle bars input
   addButtons: function(numButtons, wrapper, fullButtons) {
-      $(wrapper).append('<div class="pagination-buttons"></div>');
-      if (fullButtons === true) {
-        //find unique class to make each pagination-button
-         $('.pagination-buttons').append('<div class="pagination-button prev">&laquo;</div>');
+
+      if (fullButtons === false) {
+          this.context.full = false;
       }
-      for (var i = 1; i < numButtons; i++) {
-        if (i == 1){
-            $('.pagination-buttons').append('<div class="pagination-button number active" data-control="'+i+'">' + i + '</div>');
-        } else {
-            $('.pagination-buttons').append('<div class="pagination-button number" data-control="'+i+'">' + i + '</div>');
+
+      this.handlebarsHelpers();
+
+     var source = $("#entry-template").html(),
+         template = Handlebars.compile(source),
+         html = template(this.context);
+
+        $(wrapper).append(html);
+
+     /* var source,
+      tempalte;
+      $.ajax({
+         url: 'buttons.handlebars',
+         cache: true,
+         success: function(data) {
+             source = data;
+             template = Handlebars.compile(source);
+             $(wrapper).append(tempalte);
+         }
+     });*/
+
+  },
+
+  handlebarsHelpers: function(){
+    Handlebars.registerHelper('times', function(n, block){
+        var accum = '';
+        for(var i = 2; i < n; ++i) {
+            accum += block.fn(i);
         }
-      }
-      if (fullButtons === true) {
-         $('.pagination-buttons').append('<div class="pagination-button next">&raquo;</div>');
-      }
+        return accum;
+    });
+
+    Handlebars.registerHelper('checkFirst', function(m, options){
+        if(m == 1){
+            return options.fn(true, m);
+        }
+    });
   },
 
   paginationButtonClick: function (button, numItems) {
-    $('.active').removeClass('active');
+    this.$active.removeClass('active');
     button.addClass('active');
 
     var button = $(button).attr('data-control');
@@ -138,6 +180,8 @@ var Pagination = {
     this.clickCounter = button - 1;
 
     this.paginate(numItems, button);
+
+    this.cacheDom();
     },
 
     classify: function (className) {
@@ -146,9 +190,9 @@ var Pagination = {
     },
 
     buttonKeepUp: function (direction)  {
-        var $next = $('.active').next(),
-            $prev = $('.active').prev();
-        $('.active').removeClass('active');
+        var $next = this.$active.next(),
+            $prev = this.$active.prev();
+        this.$active.removeClass('active');
         if (direction == true) {
             //code for next
             $next.addClass('active');
