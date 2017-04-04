@@ -38,6 +38,7 @@ var Pagination = {
       numButtons: 0
   },
 
+//init function
   setDefault: function(settings) {
     var counter = 0,
         max,
@@ -76,10 +77,12 @@ var Pagination = {
     this.cacheDom();
   },
 
+  //cahces dom objects so not constatly calling dom
   cacheDom: function() {
       this.$active = $('.active');
   },
 
+  //event for next click button
   nextClick: function(numItems){
 
     if (this.maxNumberClicks > this.clickCounter) {
@@ -92,6 +95,7 @@ var Pagination = {
     }
   },
 
+  //event for previous click button
   previousClick: function(numItems){
     if (this.clickCounter > 0) {
 
@@ -103,6 +107,7 @@ var Pagination = {
     }
   },
 
+  //pagination functionality here
   paginate: function(numItems, button, className) {
 
     if (button != 0){
@@ -155,6 +160,7 @@ var Pagination = {
 
   },
 
+  //register handlebar helpers
   handlebarsHelpers: function(){
     Handlebars.registerHelper('times', function(n, block){
         var accum = '';
@@ -171,6 +177,7 @@ var Pagination = {
     });
   },
 
+  //event for clicking a number button in the pagination controls
   paginationButtonClick: function (button, numItems) {
     this.$active.removeClass('active');
     button.addClass('active');
@@ -184,11 +191,13 @@ var Pagination = {
     this.cacheDom();
     },
 
+    //turn class name into class usable by jquery
     classify: function (className) {
         className = "." + className;
         return className;
     },
 
+    //styles buttons based on button click
     buttonKeepUp: function (direction)  {
         var $next = this.$active.next(),
             $prev = this.$active.prev();
