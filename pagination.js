@@ -62,8 +62,8 @@ var Pagination = {
     if (sliderButtons === true) {
         $(wrapper).prepend("<div class='prev slider-button'></div>").append("<div class='next slider-button'></div>");
     }
-    //this.totalItemsNumber = counter;
-    this.totalItemsNumber =
+    this.totalItemsNumber = counter;
+    //this.totalItemsNumber =
     max = (this.totalItemsNumber / numItems) - 1;
     this.maxNumberClicks = Math.ceil(max);
 
@@ -210,5 +210,6 @@ var Pagination = {
             //code for previous
             $prev.addClass('active');
         }
+        this.cacheDom();
     }
 };
